@@ -80,7 +80,7 @@ handleToggleContextMenu = (event) => {
   event.preventDefault();
 }
 
-handleMetadata(metadata){
+handleMetadata(pvname,metadata){
 
 
   this.setState({['metadata']	 :metadata});
@@ -114,7 +114,7 @@ handleOnClick = ()=>{
 
 render() {
   const {classes}= this.props;
-  const pv = this.props.pv;
+  const pv = this.state.pvname;
   const macros=  this.props.macros;
   const usePvLabel= this.props.usePvLabel;
   const mylabel= this.props.label;

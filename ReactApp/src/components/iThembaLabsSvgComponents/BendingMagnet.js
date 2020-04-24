@@ -83,7 +83,7 @@ handleToggleContextMenu = (event) => {
 
 
 
-handleMetadata(metadata){
+handleMetadata(pvname, metadata){
 
 
   this.setState({['metadata']	 :metadata});
@@ -93,7 +93,7 @@ handleMetadata(metadata){
 
 
 handleInputValue(pvname,inputValue,initialized,severity){
-
+  console.log(pvname,inputValue,initialized,severity)
   this.setState({['value']	 :inputValue,
   ['pvname']:pvname,
   ['initialized']:initialized,
@@ -117,7 +117,7 @@ handleOnClick = device => event => {
 
 render() {
   const {classes}= this.props;
-  const pv = this.props.pv;
+  const pv = this.state.pvname;
   const macros=  this.props.macros;
   const usePvLabel= this.props.usePvLabel;
   const mylabel= this.props.label;
