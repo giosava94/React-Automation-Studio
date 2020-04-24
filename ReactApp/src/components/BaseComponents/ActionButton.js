@@ -27,17 +27,7 @@ const styles = (theme) => ({
   },
 });
 
-/**
- * The ActionButton Component is a wrapper on the Material-UI Button component.
- * The ActionButton will ouput the `actionValue` to the process variable when pressed.
- * The ActionButton component is implemented with zero margins and enabled to grow to the width of its parent container.<br/><br/>
- * The margins and spacing must be controlled from the parent component.<br/><br/>
- * Material-UI Button Demos:
- * https://material-ui.com/demos/buttons/<br/><br/>
- * Material-UI Button API:
- * https://material-ui.com/api/button/
- */
-class ActionButton extends React.Component {
+class ActionButtonCore extends React.Component {
   constructor(props) {
     super(props);
     this.handleButtonClick = this.handleButtonClick.bind(this);
@@ -76,21 +66,31 @@ class ActionButton extends React.Component {
       />
     );
   }
-
-  /**
-   * Specific props type and default values for this widgets.
-   * They extends the ones provided for a generic widget.
-   */
-  static propTypes = {
-    // Define the string on the button.
-    actionString: PropTypes.string,
-    // Define the value to write into the PV.
-    actionValue: PropTypes.any,
-  };
 }
 
-function Container(props) {
-  return <Widget component={ActionButton} {...props} />;
+/**
+ * The ActionButton Component is a wrapper on the Material-UI Button component.
+ * The ActionButton will ouput the `actionValue` to the process variable when pressed.
+ * The ActionButton component is implemented with zero margins and enabled to grow to the width of its parent container.<br/><br/>
+ * The margins and spacing must be controlled from the parent component.<br/><br/>
+ * Material-UI Button Demos:
+ * https://material-ui.com/demos/buttons/<br/><br/>
+ * Material-UI Button API:
+ * https://material-ui.com/api/button/
+ */
+function ActionButton(props) {
+  return <Widget component={ActionButtonCore} {...props} />;
 }
 
-export default withStyles(styles, { withTheme: true })(Container);
+/**
+ * Specific props type and default values for this widgets.
+ * They extends the ones provided for a generic widget.
+ */
+ActionButton.propTypes = {
+  /** Define the string on the button. */
+  actionString: PropTypes.string,
+  /** Define the value to write into the PV. */
+  actionValue: PropTypes.any,
+};
+
+export default withStyles(styles, { withTheme: true })(ActionButton);
