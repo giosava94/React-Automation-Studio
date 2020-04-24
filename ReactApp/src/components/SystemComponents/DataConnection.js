@@ -35,8 +35,8 @@ class DataConnection extends React.Component {
             value={localValue}
             localVariable={this.context.localVariables.pv}
             initialValue={this.props.initialLocalVariableValue}
-            handleInputValue={this.props.onHandleInputValue}
-            handleMetadata={this.props.onHandleMetadata}
+            handleInputValue={this.props.handleInputValue}
+            handleMetadata={this.props.handleMetadata}
             outputValue={this.props.outputValue}
             useStringValue={this.props.useStringValue}
             debug={this.props.debug}
@@ -47,8 +47,8 @@ class DataConnection extends React.Component {
             <EpicsPV
               key={pvname}
               pv={pvname}
-              handleInputValue={this.props.onHandleInputValue}
-              handleMetadata={this.props.onHandleMetadata}
+              handleInputValue={this.props.handleInputValue}
+              handleMetadata={this.props.handleMetadata}
               outputValue={this.props.outputValue}
               newValueTrigger={this.props.newValueTrigger}
               useStringValue={this.props.useStringValue}

@@ -302,8 +302,8 @@ export default class Widget extends React.Component {
           initialLocalVariableValue={this.props.initialLocalVariableValue}
           newValueTrigger={this.state.dataPVs[pv].newValueTrigger}
           debug={this.props.debug}
-          onHandleInputValue={this.handleInputValue}
-          onHandleMetadata={this.handleMetadata}
+          handleInputValue={this.handleInputValue}
+          handleMetadata={this.handleMetadata}
           onHandleInputField={this.handleInputField}
         />
       );
