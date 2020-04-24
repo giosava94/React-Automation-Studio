@@ -1,7 +1,8 @@
 import React from 'react'
-import AutomationStudioContext from './AutomationStudioContext';
-import { withStyles } from '@material-ui/core/styles';
 import uuid from 'uuid';
+import { withStyles } from '@material-ui/core/styles';
+import AutomationStudioContext from './AutomationStudioContext';
+
 const styles = theme => ({
   body1: theme.typography.body1,
 
@@ -42,14 +43,14 @@ class LocalPV extends React.Component {
       this.test=this.test.bind(this);
     }
     handleInputValue(){
-      this.props.handleInputValue(this.state.internalValue,this.state.pvname,this.state.initialized,this.state.severity);
+      this.props.handleInputValue(this.state.pvname,this.state.internalValue,this.state.initialized,this.state.severity);
     }
     handleMetadata(){
       if (typeof this.props.handleMetadata !== 'undefined'){
-        this.props.handleMetadata(this.state['pv']);
+        this.props.handleMetadata(this.state.pvname,this.state['pv']);
 
       }
-      this.props.handleInputValue(this.state.internalValue,this.state.pvname,this.state.initialized,this.state.severity);
+      this.props.handleInputValue(this.state.pvname,this.state.internalValue,this.state.initialized,this.state.severity);
     }
 
     updatePVData(msg){
@@ -92,16 +93,16 @@ class LocalPV extends React.Component {
             this.handleMetadata
           );
           //        if (typeof this.props.handleMetadata !== 'undefined'){
-          //          this.props.handleMetadata(this.state['pv']);
+          //          this.props.handleMetadata(this.state.pvname,this.state['pv']);
           //        }
           //  console.log(msg);
         }
         // if (this.state.pvname.includes('loc://')){
         //   console.log('fire');
-        //   this.props.handleInputValue(21312,this.state.pvname,true,0)
+        //   this.props.handleInputValue(this.state.pvname,21312,true,0)
         // }
         // else{
-        //   this.props.handleInputValue(this.state.internalValue,this.state.pvname,this.state.initialized,this.state.severity);
+        //   this.props.handleInputValue(this.state.pvname,this.state.internalValue,this.state.initialized,this.state.severity);
         // }
       }
 
