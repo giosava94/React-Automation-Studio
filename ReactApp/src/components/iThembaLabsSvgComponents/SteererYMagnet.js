@@ -70,7 +70,7 @@ class SteererYMagnet extends React.Component {
   }
 
 
-  handleMetadata= readback => (metadata) => {
+  handleMetadata= readback => (pvname,metadata) => {
 
     let pvs=this.state.pvs;
     pvs[readback].metadata=metadata;
@@ -80,7 +80,7 @@ class SteererYMagnet extends React.Component {
   }
 
 
-  handleInputValue= readback => (inputValue,pvname,initialized,severity)=>{
+  handleInputValue= readback => (pvname,inputValue,initialized,severity)=>{
     let pvs=this.state.pvs;
     pvs[readback].value=inputValue;
     pvs[readback].initialized=initialized;

@@ -58,13 +58,13 @@ class MobileDemo2 extends React.Component {
             <Grid container spacing={2}>
               <Grid item xs={12} lg={6}>
                 <div style={{height:'25vh'}}>
-                  <GraphY  pvs={['pva://testIOC:test4','pva://testIOC:test5'] } legend={['Sine Wave ','Amplitude']} lineColor={[this.props.theme.palette.secondary.main,lime['400']]}/>
+                  <GraphY  pv={['pva://testIOC:test4','pva://testIOC:test5'] } legend={['Sine Wave ','Amplitude']} lineColor={[this.props.theme.palette.secondary.main,lime['400']]}/>
                 </div>
               </Grid>
               <Grid item xs={12} lg={6}>
                 <div style={{height:'25vh'}}>
                   <GraphY
-                    pvs={[
+                    pv={[
                         'pva://testIOC:amplitude',
 
 

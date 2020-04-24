@@ -115,7 +115,7 @@ class HarpGraph extends React.Component {
   }
 
 
-  handleRangeInputValue = (inputValue,pvname,initialized,severity)=>{
+  handleRangeInputValue = (pvname,inputValue,initialized,severity)=>{
     //  console.log("test");
     //  console.log("value: ",inputValue);
     //  console.log("pvname:", pvname);
@@ -162,7 +162,7 @@ class HarpGraph extends React.Component {
   }
 
 
-  handleInputValue = (inputValue,pvname,initialized,severity)=>{
+  handleInputValue = (pvname,inputValue,initialized,severity)=>{
     //  console.log("test");
     //  console.log("value: ",inputValue);
     //  console.log("pvname:", pvname);
@@ -275,7 +275,7 @@ class HarpGraph extends React.Component {
   }
 
 
-  handleMetadata =  pvname=>(metadata) =>{
+  handleMetadata =  pvname=>(pvname,metadata) =>{
 
     let dataPVs=this.state.dataPVs;
     dataPVs[pvname].metadata=metadata;

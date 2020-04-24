@@ -52,7 +52,7 @@ const {classes} =this.props;
           </h2>
           <div style={{width:'800px', height: '400px'}}>
             <GraphY
-              pvs={[
+              pv={[
                 'pva://testIOC:MTextUpdate1',
                 'pva://testIOC:MTextUpdate2',
                 'pva://testIOC:MTextUpdate3',

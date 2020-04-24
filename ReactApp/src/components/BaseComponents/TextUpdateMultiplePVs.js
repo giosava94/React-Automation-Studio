@@ -76,7 +76,7 @@ class TextUpdateMultiplePVs extends React.Component {
 }
 
 
-handleInputValue = (inputValue,pvname,initialized,severity)=>{
+handleInputValue = (pvname,inputValue,initialized,severity)=>{
 //  console.log("test");
 //  console.log("value: ",inputValue);
 //  console.log("pvname:", pvname);

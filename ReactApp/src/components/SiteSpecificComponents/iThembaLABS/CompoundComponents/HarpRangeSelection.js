@@ -47,7 +47,7 @@ class HarpRangeSelection extends React.Component {
 }
 
 
-handleInputValue=name=>(inputValue,pvname,initialized,severity)=>{
+handleInputValue=name=>(pvname,inputValue,initialized,severity)=>{
 //  console.log("name: ",name,pvname,inputValue);
   let pv=this.state[name];
   pv.inputValue=inputValue;
@@ -60,7 +60,7 @@ this.setState({[name]:pv});
 }
 
 
-handleMetadata=name=>(metadata)=>{
+handleMetadata=name=>(pvname,metadata)=>{
   let pv=this.state[name];
   pv.metadata=metadata;
   this.setState({[name]:pv});

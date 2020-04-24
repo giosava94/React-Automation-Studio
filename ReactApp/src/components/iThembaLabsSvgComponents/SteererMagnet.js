@@ -38,7 +38,7 @@ componentWillUnmount() {
 
 
 
-handleMetadata(metadata){
+handleMetadata(pvname,metadata){
 
 
   this.setState({['metadata']	 :metadata});
@@ -47,7 +47,7 @@ handleMetadata(metadata){
 }
 
 
-handleInputValue(inputValue,pvname,initialized,severity){
+handleInputValue(pvname,inputValue,initialized,severity){
 
   this.setState({['value']	 :inputValue,
   ['pvname']:pvname,

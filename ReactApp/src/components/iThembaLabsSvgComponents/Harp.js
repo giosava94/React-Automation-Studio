@@ -115,7 +115,7 @@ class Harp extends React.Component {
 
 
 
-  handleMetadata=name=>(metadata)=>{
+  handleMetadata=name=>(pvname,metadata)=>{
 
     let pvs=this.state.pvs;
     pvs[name]['metadata']=metadata;
@@ -124,7 +124,7 @@ class Harp extends React.Component {
 
   }
 
-  handleInputValue = name=> (inputValue,pvname,initialized,severity)=>{
+  handleInputValue = name=> (pvname,inputValue,initialized,severity)=>{
     //  console.log("test");
     //  console.log("value: ",inputValue);
     //  console.log("pvname:", pvname);

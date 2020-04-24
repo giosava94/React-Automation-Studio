@@ -120,7 +120,7 @@ class MobileDemo1 extends React.Component {
 
 
 
-  handleStateChange(stateValue){
+  handleStateChange(pvname, stateValue){
     //console.log(stateValue)
     this.setState({ stateValue })
   };
@@ -188,7 +188,7 @@ class MobileDemo1 extends React.Component {
 
                 <Grid item xs={12} >
                   <div style={{ height: graphVH, width:'96vw',}}>
-                    <GraphY  pvs={['pva://testIOC:test4','pva://testIOC:test5'] } legend={['Sine Wave','Amplitude']} lineColor={[this.props.theme.palette.secondary.main,lime['400']]}/>
+                    <GraphY  pv={['pva://testIOC:test4','pva://testIOC:test5'] } legend={['Sine Wave','Amplitude']} lineColor={[this.props.theme.palette.secondary.main,lime['400']]}/>
                   </div>
                 </Grid>
                 <Grid item xs={12}>

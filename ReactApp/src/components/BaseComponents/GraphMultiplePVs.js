@@ -131,7 +131,7 @@ class GraphMultiplePVs extends React.Component {
     this.handleToggleContextMenu=this.handleToggleContextMenu.bind(this);
     this.multipleLineData=this.multipleLineData.bind(this);
   }
-  handleInputValue = (inputValue,pvname,initialized,severity,timestamp)=>{
+  handleInputValue = (pvname,inputValue,initialized,severity,timestamp)=>{
 
     if(this.props.usePolling){
       let pvs=this.state.pvs;

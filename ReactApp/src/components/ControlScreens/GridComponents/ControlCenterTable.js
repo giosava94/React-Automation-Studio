@@ -75,7 +75,7 @@ class ControlCenterTable extends React.Component {
 
   }
 
-  handleInputValue = (id,name)=>(inputValue,pvname,initialized,severity)=>{
+  handleInputValue = (id,name)=>(pvname,inputValue,initialized,severity)=>{
     let rowPVs=this.state.rowPVs;
     rowPVs[id][name].value=inputValue;
     rowPVs[id][name].initialized=initialized;
@@ -85,7 +85,7 @@ class ControlCenterTable extends React.Component {
 //console.log(rowPVs)
   }
 
-  handleMetadata = (id,name)=>(metadata) =>{
+  handleMetadata = (id,name)=>(pvname,metadata) =>{
     let rowPVs=this.state.rowPVs;
     rowPVs[id][name].metadata=metadata;
     this.setState({rowPVs:rowPVs});

@@ -43,7 +43,7 @@ class Mobile extends React.Component {
         <Grid item xs={12}>
           <div style={{height:'15vh'}}>
             <GraphY
-              pvs={['pva://testIOC:test4','pva://testIOC:test5'] }
+              pv={['pva://testIOC:test4','pva://testIOC:test5'] }
               legend={['Sine Wave ','Amplitude ']}
             />
           </div>

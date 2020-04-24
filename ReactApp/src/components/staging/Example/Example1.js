@@ -120,7 +120,7 @@ class Example1 extends React.Component {
 
 
 
-  handleStateChange(stateValue){
+  handleStateChange(pvname, stateValue){
     //console.log(stateValue)
     this.setState({ stateValue })
   };
@@ -188,7 +188,7 @@ class Example1 extends React.Component {
 
                 <Grid item xs={12} >
                   <div style={{ height: graphVH, width:'96vw',}}>
-                    <GraphY  pvs={['pva://testIOC:test4','pva://testIOC:test5'] } legend={['Sine Wave','Amplitude']} lineColor={[this.props.theme.palette.secondary.main,lime['400']]}/>
+                    <GraphY  pv={['pva://testIOC:test4','pva://testIOC:test5'] } legend={['Sine Wave','Amplitude']} lineColor={[this.props.theme.palette.secondary.main,lime['400']]}/>
                   </div>
                 </Grid>
                 <Grid item xs={12}>
@@ -229,7 +229,7 @@ class Example1 extends React.Component {
                 <Grid item xs={12} sm={12} md={12}  lg={12}>
 
 
-                  <SelectionList horizontal={true} pv='loc://editorType'    useStringValue={true} custom_selection_strings={['ThumbWheel','Slider']} intialLocalVariableValue='ThumbWheel' />
+                  <SelectionList horizontal={true} pv='loc://editorType'    useStringValue={true} custom_selection_strings={['ThumbWheel','Slider']} initialLocalVariableValue='ThumbWheel' />
 
 
 
@@ -304,7 +304,6 @@ class Example1 extends React.Component {
         </AppBar>
         <DataConnection
           pv='loc://editorType'
-
           useStringValue={true}
           handleInputValue={this.handleStateChange}
         />

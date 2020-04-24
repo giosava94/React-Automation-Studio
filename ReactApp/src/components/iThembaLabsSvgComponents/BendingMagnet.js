@@ -92,7 +92,7 @@ handleMetadata(metadata){
 }
 
 
-handleInputValue(inputValue,pvname,initialized,severity){
+handleInputValue(pvname,inputValue,initialized,severity){
 
   this.setState({['value']	 :inputValue,
   ['pvname']:pvname,
@@ -102,7 +102,7 @@ handleInputValue(inputValue,pvname,initialized,severity){
 }
 
 
-handleInputValueLabel(inputValue){
+handleInputValueLabel(pvname,inputValue){
 
   this.setState({['label']:inputValue});
 

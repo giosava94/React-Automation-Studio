@@ -44,7 +44,7 @@ handleMetadata(pvname,metadata){
 }
 
 
-handleInputValue(inputValue,pvname,initialized,severity){
+handleInputValue(pvname,inputValue,initialized,severity){
 
   this.setState({[pvname]:{['value']	 :inputValue,['pvname']:pvname,['initialized']:initialized, ['severity']:severity}});
 

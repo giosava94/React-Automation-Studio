@@ -80,7 +80,7 @@ class Probe extends React.Component {
             <Grid item xs={12}  >
               <div style={{height:'25vh'}}>
                 <GraphY
-                  pvs={['$(device)']}  macros={{'$(device)':probeObject.pvname}}
+                  pv={['$(device)']}  macros={{'$(device)':probeObject.pvname}}
                   maxLength={1000}
                   triggerOnSingleValueChange
 
@@ -144,7 +144,7 @@ class Probe extends React.Component {
             <Grid item xs={12}  >
               <div style={{height:'25vh'}}>
                 <GraphY
-                  pvs={['$(device)']}  macros={{'$(device)':probeObject.pvname}}
+                  pv={['$(device)']}  macros={{'$(device)':probeObject.pvname}}
                   maxLength={1000}
                   triggerOnSingleValueChange
 
