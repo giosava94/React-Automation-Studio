@@ -1,345 +1,388 @@
-import React, { useRef} from 'react';
+import React, { useRef } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core";
+import { Typography, FormControlLabel } from "@material-ui/core";
 import PropTypes from "prop-types";
 import debounce from "lodash.debounce";
 import Widget from "../SystemComponents/Widgets/Widget";
-import RCSlider  from 'rc-slider';
-
-import { FormControlLabel } from "@material-ui/core";
-
-
-
-
+import RCSlider from "rc-slider";
 
 const styles = (theme) => {
-  const backgroundColor = theme.palette.type === 'light' ? 'rgba(0, 0, 0, 0.23)' : 'rgba(255, 255, 255, 0.23)'; //copied from material ui textfield 
-  return (
+  const backgroundColor =
+    theme.palette.type === "light"
+      ? "rgba(0, 0, 0, 0.23)"
+      : "rgba(255, 255, 255, 0.23)"; //copied from material ui textfield
+  return {
+    root: {
+      width: 300,
+    },
+    input: { textAlign: "center", marginBottom: 8, background: "green" },
+    slider: {
+      color: "primary",
+    },
 
-    {
-      root: {
-        width: 300,
-      },
-      input: {textAlign:'center',marginBottom:8,background:'green'},
-      slider: {
-        
-        color: "primary",
-      },
-     
-      horizontalSlider: {
-        width: "100%",
-     
-        paddingBottom: theme.spacing(3),
-        paddingRight: theme.spacing(3),
-        //paddingLeft: theme.spacing(3),
-    
-      
-      },
-      horizontalSliderLabel: {
-        width: "100%",
-    
-        padding: theme.spacing(0),
-    
-      },
-      horizontalSliderValue: {
-        width: "100%",
-     
-        
-        padding: theme.spacing(0),
-       
-      },
-      
-      verticalSliderLabel: {
-        width: "100%",
-        textAlign: 'center',
-        height:'100%', 
-   
-        padding: theme.spacing(1),
-    
-      },
-      verticalSliderValue: {
-        width: "100%",
-        textAlign: 'center',
-        height:'100%', 
-    
-        },
-        verticalSlider: {
-        
-          textAlign: 'center',
-          height:'100%', 
-        
-            padding: theme.spacing(1),
-       
-          },
-      '@global': {
-        '.rc-slider': {
-          position: 'relative',
-          height: 14,
-          padding: '5px 0',
-          width: '100%',
-          borderRadius: 6,
-          touchAction: 'none',
-          boxSizing: 'border-box',
-          webkitTapHighlightColor: 'rgba(0, 0, 0, 0)'
-        },
-        '.rc-slider *': {
-          boxSizing: 'border-box',
-          webkitTapHighlightColor: 'rgba(0, 0, 0, 0)'
-        },
-        '.rc-slider-rail': {
-          position: 'absolute',
-          width: '100%',
-          backgroundColor: backgroundColor,
-          height: 4,
-          borderRadius: 6
-        },
-        '.rc-slider-track': {
-          position: 'absolute',
-          left: '0',
-          height: 4,
-          borderRadius: 6,
-          backgroundColor: theme.palette.primary.main
-        },
-        '.rc-slider-handle': {
-          position: 'absolute',
-          width: 14,
-          height: 14,
-          cursor: 'grab',
-          fallbacks: [
-            {
-              cursor: '-webkit-grab'
-            },
-            {
-              cursor: 'pointer'
-            }
-          ],
-          marginTop: -5,
-          borderRadius: '50%',
-        
-          border: 'solid 2px ' + theme.palette.primary.main,
-          backgroundColor: theme.palette.primary.main,
-          touchAction: 'pan-x'
-        },
-        '.rc-slider-handle-dragging.rc-slider-handle-dragging.rc-slider-handle-dragging': {
-          borderColor: '#57c5f7',
-          boxShadow: '0 0 0 5px #96dbfa'
-        },
-        '.rc-slider-handle:focus': {
-          outline: 'none'
-        },
-        '.rc-slider-handle-click-focused:focus': {
-          borderColor: theme.palette.primary.light,
-          boxShadow: 'unset'
-        },
-        '.rc-slider-handle:hover': {
-          borderColor: theme.palette.primary.light,
-        },
-        '.rc-slider-handle:active': {
-          borderColor: theme.palette.primary.light,
-          boxShadow: '0 0 5px ' + theme.palette.primary.light,
-          cursor: 'grabbing',
-          fallbacks: [
-            {
-              cursor: '-webkit-grabbing'
-            }
-          ]
-        },
-        '.rc-slider-mark': {
-          position: 'absolute',
-          top: 18,
-          left: '0',
-          width: '100%',
-          fontSize: 12
-        },
-        '.rc-slider-mark-text': {
-          position: 'absolute',
-          display: 'inline-block',
-          verticalAlign: 'middle',
-          textAlign: 'center',
-          cursor: 'pointer',
-          whiteSpace: 'nowrap',
-          color: theme.palette.text.primary
-        },
-        '.rc-slider-mark-text-active': {
-          color: theme.palette.text.primary
-        },
-        '.rc-slider-step': {
-          position: 'absolute',
-          width: '100%',
-          height: 4,
-          background: 'transparent'
-        },
-        '.rc-slider-dot': {
-          position: 'absolute',
-          bottom: -2,
-          marginLeft: -4,
-          width: 8,
-          height: 8,
-          border: '2px solid #e9e9e9',
-          backgroundColor: '#fff',
-          cursor: 'pointer',
-          borderRadius: '50%',
-          verticalAlign: 'middle'
-        },
-        '.rc-slider-dot-active': {
-          borderColor: theme.palette.primary.main
-        },
-        '.rc-slider-dot-reverse': {
-          marginRight: -4
-        },
-        '.rc-slider-disabled': {
-         
-        },
-        '.rc-slider-disabled .rc-slider-track': {
-          backgroundColor: theme.palette.grey[500]
+    horizontalSlider: {
+      width: "100%",
 
-        },
-        '.rc-slider-disabled .rc-slider-handle, .rc-slider-disabled .rc-slider-dot': {
-          borderColor: theme.palette.grey[500],
-          boxShadow: 'none',
-          backgroundColor: theme.palette.grey[500],
-          cursor: 'not-allowed'
-        },
-        '.rc-slider-disabled .rc-slider-mark-text, .rc-slider-disabled .rc-slider-dot': {
-          cursor: 'not-allowed !important'
-        },
-        '.rc-slider-vertical': {
-          width: 14,
-          height: '100%',
-          padding: '0 5px'
-        },
-        '.rc-slider-vertical .rc-slider-rail': {
-          height: '100%',
-          width: 4
-        },
-        '.rc-slider-vertical .rc-slider-track': {
-          left: 5,
-          bottom: '0',
-          width: 4
-        },
-        '.rc-slider-vertical .rc-slider-handle': {
-          marginLeft: -5,
-          touchAction: 'pan-y'
-        },
-        '.rc-slider-vertical .rc-slider-mark': {
-          top: '0',
-          left: 18,
-          height: '100%'
-        },
-        '.rc-slider-vertical .rc-slider-step': {
-          height: '100%',
-          width: 4
-        },
-        '.rc-slider-vertical .rc-slider-dot': {
-          left: 2,
-          marginBottom: -4
-        },
-        '.rc-slider-vertical .rc-slider-dot:first-child': {
-          marginBottom: -4
-        },
-        '.rc-slider-vertical .rc-slider-dot:last-child': {
-          marginBottom: -4
-        },
-        '.rc-slider-tooltip-zoom-down-enter, .rc-slider-tooltip-zoom-down-appear': {
-          animationDuration: '0.3s',
-          animationFillMode: 'both',
-          display: 'block !important',
-          animationPlayState: 'paused',
-          transform: 'scale(0, 0)',
-          animationTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)'
-        },
-        '.rc-slider-tooltip-zoom-down-leave': {
-          animationDuration: '0.3s',
-          animationFillMode: 'both',
-          display: 'block !important',
-          animationPlayState: 'paused',
-          animationTimingFunction: 'cubic-bezier(0.755, 0.05, 0.855, 0.06)'
-        },
-        '.rc-slider-tooltip-zoom-down-enter.rc-slider-tooltip-zoom-down-enter-active, .rc-slider-tooltip-zoom-down-appear.rc-slider-tooltip-zoom-down-appear-active': {
-          animationName: 'rcSliderTooltipZoomDownIn',
-          animationPlayState: 'running'
-        },
-        '.rc-slider-tooltip-zoom-down-leave.rc-slider-tooltip-zoom-down-leave-active': {
-          animationName: 'rcSliderTooltipZoomDownOut',
-          animationPlayState: 'running'
-        },
-        '@keyframes rcSliderTooltipZoomDownIn': {
-          '0%': {
-            opacity: '0',
-            transformOrigin: '50% 100%',
-            transform: 'scale(0, 0)'
-          },
-          '100%': {
-            transformOrigin: '50% 100%',
-            transform: 'scale(1, 1)'
-          }
-        },
-        '@keyframes rcSliderTooltipZoomDownOut': {
-          '0%': {
-            transformOrigin: '50% 100%',
-            transform: 'scale(1, 1)'
-          },
-          '100%': {
-            opacity: '0',
-            transformOrigin: '50% 100%',
-            transform: 'scale(0, 0)'
-          }
-        },
-        '.rc-slider-tooltip': {
-          position: 'absolute',
-          left: -9999,
-          top: -9999,
-          visibility: 'visible',
-          boxSizing: 'border-box',
-          webkitTapHighlightColor: 'rgba(0, 0, 0, 0)'
-        },
-        '.rc-slider-tooltip *': {
-          boxSizing: 'border-box',
-          webkitTapHighlightColor: 'rgba(0, 0, 0, 0)'
-        },
-        '.rc-slider-tooltip-hidden': {
-          display: 'none'
-        },
-        '.rc-slider-tooltip-placement-top': {
-          padding: '4px 0 8px 0'
-        },
-        '.rc-slider-tooltip-inner': {
-          padding: '6px 2px',
-          minWidth: 24,
-          height: 24,
-          fontSize: 12,
-          lineHeight: '1',
-          color: '#fff',
-          textAlign: 'center',
-          textDecoration: 'none',
-          backgroundColor: '#6c6c6c',
-          borderRadius: 6,
-          boxShadow: '0 0 4px #d9d9d9'
-        },
-        '.rc-slider-tooltip-arrow': {
-          position: 'absolute',
-          width: '0',
-          height: '0',
-          borderColor: 'transparent',
-          borderStyle: 'solid'
-        },
-        '.rc-slider-tooltip-placement-top .rc-slider-tooltip-arrow': {
-          bottom: 4,
-          left: '50%',
-          marginLeft: -4,
-          borderWidth: '4px 4px 0',
-          borderTopColor: '#6c6c6c'
-        }
-      }
+      paddingBottom: theme.spacing(3),
+      paddingRight: theme.spacing(3),
+      //paddingLeft: theme.spacing(3),
+    },
+    horizontalSliderLabel: {
+      width: "100%",
 
-    })
+      padding: theme.spacing(0),
+    },
+    horizontalSliderValue: {
+      width: "100%",
+
+      padding: theme.spacing(0),
+    },
+
+    verticalSliderLabel: {
+      width: "100%",
+      textAlign: "center",
+      height: "100%",
+
+      padding: theme.spacing(1),
+    },
+    verticalSliderValue: {
+      width: "100%",
+      textAlign: "center",
+      height: "100%",
+    },
+    verticalSlider: {
+      textAlign: "center",
+      height: "100%",
+
+      padding: theme.spacing(1),
+    },
+    "@global": {
+      ".rc-slider": {
+        position: "relative",
+        height: 14,
+        padding: "5px 0",
+        width: "100%",
+        borderRadius: 6,
+        touchAction: "none",
+        boxSizing: "border-box",
+        webkitTapHighlightColor: "rgba(0, 0, 0, 0)",
+      },
+      ".rc-slider *": {
+        boxSizing: "border-box",
+        webkitTapHighlightColor: "rgba(0, 0, 0, 0)",
+      },
+      ".rc-slider-rail": {
+        position: "absolute",
+        width: "100%",
+        backgroundColor: backgroundColor,
+        height: 4,
+        borderRadius: 6,
+      },
+      ".rc-slider-track": {
+        position: "absolute",
+        left: "0",
+        height: 4,
+        borderRadius: 6,
+        backgroundColor: theme.palette.primary.main,
+      },
+      ".rc-slider-handle": {
+        position: "absolute",
+        width: 14,
+        height: 14,
+        cursor: "grab",
+        fallbacks: [
+          {
+            cursor: "-webkit-grab",
+          },
+          {
+            cursor: "pointer",
+          },
+        ],
+        marginTop: -5,
+        borderRadius: "50%",
+
+        border: "solid 2px " + theme.palette.primary.main,
+        backgroundColor: theme.palette.primary.main,
+        touchAction: "pan-x",
+      },
+      ".rc-slider-handle-dragging.rc-slider-handle-dragging.rc-slider-handle-dragging": {
+        borderColor: "#57c5f7",
+        boxShadow: "0 0 0 5px #96dbfa",
+      },
+      ".rc-slider-handle:focus": {
+        outline: "none",
+      },
+      ".rc-slider-handle-click-focused:focus": {
+        borderColor: theme.palette.primary.light,
+        boxShadow: "unset",
+      },
+      ".rc-slider-handle:hover": {
+        borderColor: theme.palette.primary.light,
+      },
+      ".rc-slider-handle:active": {
+        borderColor: theme.palette.primary.light,
+        boxShadow: "0 0 5px " + theme.palette.primary.light,
+        cursor: "grabbing",
+        fallbacks: [
+          {
+            cursor: "-webkit-grabbing",
+          },
+        ],
+      },
+      ".rc-slider-mark": {
+        position: "absolute",
+        top: 18,
+        left: "0",
+        width: "100%",
+        fontSize: 12,
+      },
+      ".rc-slider-mark-text": {
+        position: "absolute",
+        display: "inline-block",
+        verticalAlign: "middle",
+        textAlign: "center",
+        cursor: "pointer",
+        whiteSpace: "nowrap",
+        color: theme.palette.text.primary,
+      },
+      ".rc-slider-mark-text-active": {
+        color: theme.palette.text.primary,
+      },
+      ".rc-slider-step": {
+        position: "absolute",
+        width: "100%",
+        height: 4,
+        background: "transparent",
+      },
+      ".rc-slider-dot": {
+        position: "absolute",
+        bottom: -2,
+        marginLeft: -4,
+        width: 8,
+        height: 8,
+        border: "2px solid #e9e9e9",
+        backgroundColor: "#fff",
+        cursor: "pointer",
+        borderRadius: "50%",
+        verticalAlign: "middle",
+      },
+      ".rc-slider-dot-active": {
+        borderColor: theme.palette.primary.main,
+      },
+      ".rc-slider-dot-reverse": {
+        marginRight: -4,
+      },
+      ".rc-slider-disabled": {},
+      ".rc-slider-disabled .rc-slider-track": {
+        backgroundColor: theme.palette.grey[500],
+      },
+      ".rc-slider-disabled .rc-slider-handle, .rc-slider-disabled .rc-slider-dot": {
+        borderColor: theme.palette.grey[500],
+        boxShadow: "none",
+        backgroundColor: theme.palette.grey[500],
+        cursor: "not-allowed",
+      },
+      ".rc-slider-disabled .rc-slider-mark-text, .rc-slider-disabled .rc-slider-dot": {
+        cursor: "not-allowed !important",
+      },
+      ".rc-slider-vertical": {
+        width: 14,
+        height: "100%",
+        padding: "0 5px",
+      },
+      ".rc-slider-vertical .rc-slider-rail": {
+        height: "100%",
+        width: 4,
+      },
+      ".rc-slider-vertical .rc-slider-track": {
+        left: 5,
+        bottom: "0",
+        width: 4,
+      },
+      ".rc-slider-vertical .rc-slider-handle": {
+        marginLeft: -5,
+        touchAction: "pan-y",
+      },
+      ".rc-slider-vertical .rc-slider-mark": {
+        top: "0",
+        left: 18,
+        height: "100%",
+      },
+      ".rc-slider-vertical .rc-slider-step": {
+        height: "100%",
+        width: 4,
+      },
+      ".rc-slider-vertical .rc-slider-dot": {
+        left: 2,
+        marginBottom: -4,
+      },
+      ".rc-slider-vertical .rc-slider-dot:first-child": {
+        marginBottom: -4,
+      },
+      ".rc-slider-vertical .rc-slider-dot:last-child": {
+        marginBottom: -4,
+      },
+      ".rc-slider-tooltip-zoom-down-enter, .rc-slider-tooltip-zoom-down-appear": {
+        animationDuration: "0.3s",
+        animationFillMode: "both",
+        display: "block !important",
+        animationPlayState: "paused",
+        transform: "scale(0, 0)",
+        animationTimingFunction: "cubic-bezier(0.23, 1, 0.32, 1)",
+      },
+      ".rc-slider-tooltip-zoom-down-leave": {
+        animationDuration: "0.3s",
+        animationFillMode: "both",
+        display: "block !important",
+        animationPlayState: "paused",
+        animationTimingFunction: "cubic-bezier(0.755, 0.05, 0.855, 0.06)",
+      },
+      ".rc-slider-tooltip-zoom-down-enter.rc-slider-tooltip-zoom-down-enter-active, .rc-slider-tooltip-zoom-down-appear.rc-slider-tooltip-zoom-down-appear-active": {
+        animationName: "rcSliderTooltipZoomDownIn",
+        animationPlayState: "running",
+      },
+      ".rc-slider-tooltip-zoom-down-leave.rc-slider-tooltip-zoom-down-leave-active": {
+        animationName: "rcSliderTooltipZoomDownOut",
+        animationPlayState: "running",
+      },
+      "@keyframes rcSliderTooltipZoomDownIn": {
+        "0%": {
+          opacity: "0",
+          transformOrigin: "50% 100%",
+          transform: "scale(0, 0)",
+        },
+        "100%": {
+          transformOrigin: "50% 100%",
+          transform: "scale(1, 1)",
+        },
+      },
+      "@keyframes rcSliderTooltipZoomDownOut": {
+        "0%": {
+          transformOrigin: "50% 100%",
+          transform: "scale(1, 1)",
+        },
+        "100%": {
+          opacity: "0",
+          transformOrigin: "50% 100%",
+          transform: "scale(0, 0)",
+        },
+      },
+      ".rc-slider-tooltip": {
+        position: "absolute",
+        left: -9999,
+        top: -9999,
+        visibility: "visible",
+        boxSizing: "border-box",
+        webkitTapHighlightColor: "rgba(0, 0, 0, 0)",
+      },
+      ".rc-slider-tooltip *": {
+        boxSizing: "border-box",
+        webkitTapHighlightColor: "rgba(0, 0, 0, 0)",
+      },
+      ".rc-slider-tooltip-hidden": {
+        display: "none",
+      },
+      ".rc-slider-tooltip-placement-top": {
+        padding: "4px 0 8px 0",
+      },
+      ".rc-slider-tooltip-inner": {
+        padding: "6px 2px",
+        minWidth: 24,
+        height: 24,
+        fontSize: 12,
+        lineHeight: "1",
+        color: "#fff",
+        textAlign: "center",
+        textDecoration: "none",
+        backgroundColor: "#6c6c6c",
+        borderRadius: 6,
+        boxShadow: "0 0 4px #d9d9d9",
+      },
+      ".rc-slider-tooltip-arrow": {
+        position: "absolute",
+        width: "0",
+        height: "0",
+        borderColor: "transparent",
+        borderStyle: "solid",
+      },
+      ".rc-slider-tooltip-placement-top .rc-slider-tooltip-arrow": {
+        bottom: 4,
+        left: "50%",
+        marginLeft: -4,
+        borderWidth: "4px 4px 0",
+        borderTopColor: "#6c6c6c",
+      },
+    },
+  };
 };
 
-
 function SliderComponent(props) {
-  const emitChangeDebounced = useRef(debounce(value => emitChange(value), 10)).current;
-  
+  const emitChangeDebounced = useRef(debounce((value) => emitChange(value), 10))
+    .current;
   const emitBlurDebounced = useRef(debounce(handleBlur, 500)).current;
+
+  let content, marks;
+  if (props.initialized) {
+    content =
+      props.showValue === true ? (
+        <Typography
+          className={
+            props.vertical
+              ? props.classes.verticalSliderValue
+              : props.classes.horizontalSliderValue
+          }
+          style={{ textAlign: "center" }}
+        >
+          {props.value}
+          {props.units ? " " + props.units : ""}
+        </Typography>
+      ) : undefined;
+  } else {
+    content = undefined;
+  }
+
+  /**
+   * Val suffix refers to graphical values.
+   * Pos suffix refers to slider values.
+   */
+
+  let minVal = props.min !== undefined ? parseFloat(props.min) : 0;
+  let maxVal = props.max !== undefined ? parseFloat(props.max) : 100;
+  let minPos = minVal;
+  let maxPos = maxVal;
+  let valuePos = props.value;
+  let scale = 1;
+  let minLog = 0;
+  if (props.logarithmic && minVal > 0) {
+    minPos = 0;
+    maxPos = 100;
+    minLog = Math.log(minVal);
+    let maxLog = Math.log(maxVal);
+    scale = 100 / (maxLog - minLog);
+    valuePos = scale * (Math.log(props.value) - minLog);
+  }
+
+  let units = props.units ? props.units : "";
+  if (props.marks !== undefined) {
+    if (props.logarithmic && minVal > 0) {
+      marks = {};
+      for (let mark in props.marks) {
+        marks = {
+          ...marks,
+          [scale * (Math.log(mark) - minLog)]: props.marks[mark],
+        };
+      }
+    } else {
+      marks = props.marks;
+    }
+  } else {
+    marks = {
+      [minPos]: minVal + " " + units,
+      [maxPos]: maxVal + " " + units,
+    };
+  }
+
+  let step = parseFloat(props.step) > 0 ? props.step : undefined;
 
   /**
    * Write value on the PV using emitChangeDebounced function.
@@ -349,22 +392,23 @@ function SliderComponent(props) {
    * @param {float} value
    */
   function handleChange(value) {
+    if (props.logarithmic && minVal > 0) {
+      value = Math.exp(value / scale + minLog);
+    }
     props.handleFocus();
-    
-   emitChangeDebounced(value);
-
+    emitChangeDebounced(value);
   }
 
-  function handleBlur(){
+  function handleBlur() {
     props.handleBlur();
   }
+
   /**
    * Save value on the state.
    * @param {string} value
    */
   function emitChange(value) {
-
-    props.handleImmediateChange(value)
+    props.handleImmediateChange(value);
   }
 
   /**
@@ -373,135 +417,94 @@ function SliderComponent(props) {
    * @param {float} value
    */
   function handleChangeCommited(value) {
+    if (props.logarithmic && minVal > 0) {
+      value = Math.exp(value / scale + minLog);
+    }
     props.handleFocus();
     emitChangeDebounced(value);
-   
-    //props.handleBlur();
     emitBlurDebounced();
- 
-
   }
 
-
-  let content, marks;
-  if (props.initialized) {
-    content = props.showValue===true?(
-      <Typography 
-      className={props.vertical?props.classes.verticalSliderValue:props.classes.horizontalSliderValue}
-      style={{textAlign:'center'}}
-      >
-        {props.value} 
-        {props.units?" "+props.units:""} 
-      </Typography>
-    ):undefined;
-    
-  } else {
-    content = undefined
-  }
-  let min = props.min !== undefined ? parseFloat(props.min) : 0;
-
-  let max = props.max !== undefined ? parseFloat(props.max) : 100;
-
-  let units = props.units ? props.units : ""
-  if (props.marks !== undefined) {
-    marks = props.marks;
-  } else {
-    marks = {
-
-      [min]: min + " " + units,
-
-      [max]: max + " " + units,
-
+  function handleOnClickCapture(event) {
+    if (event.button !== 0) {
+      event.preventDefault();
+      return;
     }
   }
-  function handleOnClickCapture(event){
-  
-   if (event.button !== 0) {
-     event.preventDefault()
-    return;
-  }
-  }
 
-  
   return (
-    <div  style={{height:'100%', width:'100%',padding:props.theme.spacing(1)}} onPointerDownCapture={handleOnClickCapture}  
- 
-    
-    
+    <div
+      style={{ height: "100%", width: "100%", padding: props.theme.spacing(1) }}
+      onPointerDownCapture={handleOnClickCapture}
     >
-    <FormControlLabel
-    key={props.pvName + props.initialized}
-    className={props.vertical?props.classes.verticalSliderLabel:props.classes.horizontalSliderLabel}
-    
-    label={props.formControlLabel}
-    labelPlacement={props.labelPlacement}
-    control={
-    <FormControlLabel
-      key={props.pvName + props.initialized}
-      className={props.vertical?props.classes.verticalSliderValue:props.classes.horizontalSliderValue}
-      label={content}
-      labelPlacement={props.valuePlacement}
-      control={
-        <div
-        className={props.vertical?props.classes.verticalSlider:props.classes.horizontalSlider}
-      
-
-        >
-        <RCSlider
-
-        
-        disabled={props.disabled}
-        vertical={props.vertical}
-        value={props.initialized ? parseFloat(props.value) : 0}
-        min={props.initialized ? parseFloat(min) : undefined}
-        max={props.initialized ? parseFloat(max) : undefined}
-        marks={props.initialized ? marks : undefined}
-      // eslint-disable-next-line eqeqeq 
-        step={props.step !== undefined ? props.step!=0?props.step:undefined : undefined}
-        onChange={handleChange}
-        onAfterChange={handleChangeCommited}
+      <FormControlLabel
+        key={props.pvName + props.initialized}
+        className={
+          props.vertical
+            ? props.classes.verticalSliderLabel
+            : props.classes.horizontalSliderLabel
+        }
+        label={props.formControlLabel}
+        labelPlacement={props.labelPlacement}
+        control={
+          <FormControlLabel
+            key={props.pvName + props.initialized}
+            className={
+              props.vertical
+                ? props.classes.verticalSliderValue
+                : props.classes.horizontalSliderValue
+            }
+            label={content}
+            labelPlacement={props.valuePlacement}
+            control={
+              <div
+                className={
+                  props.vertical
+                    ? props.classes.verticalSlider
+                    : props.classes.horizontalSlider
+                }
+              >
+                <RCSlider
+                  disabled={props.disabled}
+                  vertical={props.vertical}
+                  value={props.initialized ? parseFloat(valuePos) : 0}
+                  min={props.initialized ? parseFloat(minPos) : undefined}
+                  max={props.initialized ? parseFloat(maxPos) : undefined}
+                  marks={props.initialized ? marks : undefined}
+                  // eslint-disable-next-line eqeqeq
+                  step={step}
+                  onChange={handleChange}
+                  onAfterChange={handleChangeCommited}
+                />
+              </div>
+            }
+          />
+        }
       />
-      </div>
-      }
-    />
-    }
-    />
-   </div>
-
-
+    </div>
   );
-
-
-
 }
 
 /**
-* The Slider Component is a wrapper on the rc-slider contained Slider component. The Slider component is implemented with zero margins and enabled to grow to the width of its parent container.<br/><br/>
-* The margins and spacing must be controlled from the parent component.<br/><br/>
-* For the vertical slider, the parent container must have a fixed height.
-*
-*/
+ * The Slider Component is a wrapper on the rc-slider contained Slider component. The Slider component is implemented with zero margins and enabled to grow to the width of its parent container.<br/><br/>
+ * The margins and spacing must be controlled from the parent component.<br/><br/>
+ * For the vertical slider, the parent container must have a fixed height.
+ *
+ */
 const Slider = (props) => {
-
-  return (
-    <Widget  {...props} component={SliderComponent} name={"Slider"} />
-  )
-}
+  return <Widget {...props} component={SliderComponent} name={"Slider"} />;
+};
 
 /**
-   * Specific props type and default values for this widgets.
-   * They extends the ones provided for a generic widget.
-   */
+ * Specific props type and default values for this widgets.
+ * They extends the ones provided for a generic widget.
+ */
 Slider.propTypes = {
-
   /**
    * If defined, then the DataConnection and
    * the widget debugging information will be displayed.
    */
-
-
   debug: PropTypes.bool,
-
   /**
    * Local variable initialization value.
    * When using loc:// type PVs.
@@ -512,8 +515,8 @@ Slider.propTypes = {
    */
   label: PropTypes.string,
   /**
-  * Custom PV to define the units to be used, usePvLabel must be set to `true` and useMetadata to `false`, NB must contain correct prefix ie: pva:// eg. 'pva://$(device):test$(id)'.
-  */
+   * Custom PV to define the units to be used, usePvLabel must be set to `true` and useMetadata to `false`, NB must contain correct prefix ie: pva:// eg. 'pva://$(device):test$(id)'.
+   */
   labelPv: PropTypes.string,
   /**
    * Values of macros that will be substituted in the pv name.
@@ -536,8 +539,6 @@ Slider.propTypes = {
    * Custom PV to define the minimum to be used, usePvMinMax must be set to `true` and useMetadata to `false`, NB must contain correct prefix ie: pva:// eg. 'pva://$(device):test$(id)'.
    */
   minPv: PropTypes.string,
-
-
   /**
    * Custom precision to round the value.
    */
@@ -546,13 +547,9 @@ Slider.propTypes = {
    * Custom PV to define the precision to be used, usePvPrecision must be set to `true` and useMetadata to `false`, NB must contain correct prefix ie: pva:// eg. 'pva://$(device):test$(id)'.
    */
   precPv: PropTypes.string,
-
-
-
   /**
    * Custom units to be used, if usePvUnits is not defined.
    */
-
   units: PropTypes.string,
   /**
    * Custom PV to define the units to be used, usePvUnits must be set to `true` and useMetadata to `false`, NB must contain correct prefix ie: pva:// eg. 'pva://$(device):test$(id)'.
@@ -565,12 +562,12 @@ Slider.propTypes = {
    */
   usePvLabel: PropTypes.bool,
   /**
-   * When using EPICS, the RAS pv's metadata is conventionally derived from the pyEpics PV in the pvserver. 
-   * The pyEpics metadata is unfortunately static and the values used will be the initial values that pvserver receives when it connects the first time. 
+   * When using EPICS, the RAS pv's metadata is conventionally derived from the pyEpics PV in the pvserver.
+   * The pyEpics metadata is unfortunately static and the values used will be the initial values that pvserver receives when it connects the first time.
    * This is sufficient in most cases except when the user wants to dynamically update the metaData.
-   * In this case a direct connection can be made to all the pv fields by setting useMetadata to false. 
+   * In this case a direct connection can be made to all the pv fields by setting useMetadata to false.
    * If any of the metadata pvs are defined i.e unitsPv then the PV makes a new data  connection to this alternate pv and will
-   * use the value provided by this pv as the units. 
+   * use the value provided by this pv as the units.
    * The same is the case for the precPV, labelPv, alarmPv, unitsPv and minPv.
    * By setting useMetadata to false also enables connection to other variables as defined by different protocols.
    */
@@ -591,12 +588,7 @@ Slider.propTypes = {
    * Directive to use the units contained in the   pv metadata's EGU field or unitsPv.
    *  If not defined it uses the custom units as defined by the units prop.
    */
-
-
   usePvUnits: PropTypes.bool,
-
-
-
   /**
    * If defined, then the string representation of the number can be formatted
    * using the mathjs format function
@@ -604,59 +596,57 @@ Slider.propTypes = {
    * See https://mathjs.org/docs/reference/functions/format.html for more examples
    */
   numberFormat: PropTypes.object,
-
-
   /** Name of the process variable, NB must contain correct prefix ie: pva://  eg. 'pva://$(device):test$(id)'*/
   pv: PropTypes.string,
-
   /**  Custom markers in format:
   {value1: label1,value2...:label2...}*/
   marks: PropTypes.object,
   /** The value will be increment or decremented
    * in the define step intervals
    */
-
   step: PropTypes.number,
   /** label placement position*/
-  labelPlacement:PropTypes.oneOf(['start', 'top','bottom','end']),
+  labelPlacement: PropTypes.oneOf(["start", "top", "bottom", "end"]),
   /** value placement position*/
-  valuePlacement:PropTypes.oneOf(['start', 'top','bottom','end']),
+  valuePlacement: PropTypes.oneOf(["start", "top", "bottom", "end"]),
   /**
    * Directive to show the value
    */
-
-
   showValue: PropTypes.bool,
-   /**
+  /**
    * Tooltip Text
    */
-  tooltip:PropTypes.string,
+  tooltip: PropTypes.string,
   /**
    * Directive to show the tooltip
    */
-  showTooltip:PropTypes.bool,
+  showTooltip: PropTypes.bool,
   /**
    *  Any of the MUI Tooltip props can applied by defining them as an object
    */
-
-  tooltipProps:PropTypes.object,
+  tooltipProps: PropTypes.object,
   /**
    * Directive to use a vertical slider
    */
-
-
   vertical: PropTypes.bool,
+  /**
+   * Directive to use a logarithmic scale.
+   * Min value must be greater than zero.
+   * Step value, when logarithmic conversion is enabled, 
+   * refers to the percentage step with respect to the slider length (=100)
+   */
+  logarithmic: PropTypes.bool,
 };
 
 Slider.defaultProps = {
-//  showThumbValue: false,
+  //  showThumbValue: false,
   step: 1,
-  labelPlacement: 'top',
-  valuePlacement:'top',
-  showValue:true,
-  showTooltip:false,
-  vertical:false,
-
+  labelPlacement: "top",
+  valuePlacement: "top",
+  showValue: true,
+  showTooltip: false,
+  vertical: false,
+  logarithmic: false,
 };
 
 export default withStyles(styles, { withTheme: true })(Slider);
