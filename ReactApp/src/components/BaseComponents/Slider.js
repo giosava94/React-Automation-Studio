@@ -341,6 +341,8 @@ function SliderComponent(props) {
     content = undefined;
   }
 
+  let step = parseFloat(props.step) > 0 ? props.step : undefined;
+
   /**
    * Val suffix refers to graphical values.
    * Pos suffix refers to slider values.
@@ -353,7 +355,16 @@ function SliderComponent(props) {
   let valuePos = props.value;
   let scale = 1;
   let minLog = 0;
-  if (props.logarithmic && minVal > 0) {
+  if (props.logarithmic) {
+    if (minVal <= 0) {
+      if (props.prec !== undefined) {
+        minVal = Math.pow(10, -props.prec);
+      } else if (step !== undefined) {
+        minVal = step;
+      } else {
+        minVal = 1;
+      }
+    }
     minPos = 0;
     maxPos = 100;
     minLog = Math.log(minVal);
@@ -364,7 +375,7 @@ function SliderComponent(props) {
 
   let units = props.units ? props.units : "";
   if (props.marks !== undefined) {
-    if (props.logarithmic && minVal > 0) {
+    if (props.logarithmic) {
       marks = {};
       for (let mark in props.marks) {
         marks = {
@@ -382,8 +393,6 @@ function SliderComponent(props) {
     };
   }
 
-  let step = parseFloat(props.step) > 0 ? props.step : undefined;
-
   /**
    * Write value on the PV using emitChangeDebounced function.
    * This function store the value and then wait for 10ms
@@ -392,7 +401,7 @@ function SliderComponent(props) {
    * @param {float} value
    */
   function handleChange(value) {
-    if (props.logarithmic && minVal > 0) {
+    if (props.logarithmic) {
       value = Math.exp(value / scale + minLog);
     }
     props.handleFocus();
@@ -417,7 +426,7 @@ function SliderComponent(props) {
    * @param {float} value
    */
   function handleChangeCommited(value) {
-    if (props.logarithmic && minVal > 0) {
+    if (props.logarithmic) {
       value = Math.exp(value / scale + minLog);
     }
     props.handleFocus();
@@ -632,8 +641,8 @@ Slider.propTypes = {
   /**
    * Directive to use a logarithmic scale.
    * Min value must be greater than zero.
-   * Step value, when logarithmic conversion is enabled, 
-   * refers to the percentage step with respect to the slider length (=100)
+   * Step value, when logarithmic conversion is enabled,
+   * actual does not work well.
    */
   logarithmic: PropTypes.bool,
 };

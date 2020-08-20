@@ -213,14 +213,19 @@ import Grid from "@material-ui/core/Grid";
 </Grid>;
 ```
 
-Slider EPICS variable example with logarithmic shape:
+Slider EPICS variable example with logarithmic shape.
+ 
+In this example the min value is 0. But log(0) = -Infinity.
+
+When the given minimum value is 0 the actual min value is, 
+with the following priority order, the sensibility (10^-precision), 
+or the step value, or 1:
 
 ```js
 <Slider
   pv="pva://testIOC:amplitude"
   showValue
-  min={1}
-  max={10000}
+  usePvMinMax
   usePvLabel
   usePvUnits
   usePvPrecision
