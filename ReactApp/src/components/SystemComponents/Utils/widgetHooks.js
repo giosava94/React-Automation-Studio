@@ -52,7 +52,7 @@ const useInitialized = (pvs) => {
   return initialized;
 };
 
-const useInterval = (callback, delay) => {
+const useInterval = (enable, callback, delay) => {
   const savedCallback = useRef();
 
   useEffect(() => {
@@ -63,11 +63,11 @@ const useInterval = (callback, delay) => {
     function tick() {
       savedCallback.current();
     }
-    if (delay !== null && delay !== undefined) {
+    if (enable && delay !== null && delay !== undefined) {
       let id = setInterval(tick, delay);
       return () => clearInterval(id);
     }
-  }, [delay]);
+  }, [enable, delay]);
 };
 
 const useLabel = (props, pv) => {
