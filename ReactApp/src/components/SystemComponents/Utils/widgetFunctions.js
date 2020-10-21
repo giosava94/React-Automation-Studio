@@ -57,6 +57,30 @@ const getContextPVs = (pvs) => {
   return newContextPVs;
 };
 
+const getDefaultPV = (name, macros) => {
+  let pvName = replaceMacros(name, macros);
+  return {
+    value: 0,
+    label: "",
+    pvName: pvName,
+    initialized: false,
+    PVs: [],
+    metadata: {},
+    timestamp: "",
+    readOnly: true,
+    severity: 0,
+    enum_strs: [],
+    units: "",
+  };
+};
+
+const getDefaultPVs = (pvList, macros) => {
+  if (pvList !== undefined) {
+    return pvList.map((item) => getDefaultPV(item, macros));
+  }
+  return [];
+};
+
 const getTooltipProps = (props) => {
   const { tooltip: userTooltip, tooltipProps, showTooltip, macros } = props;
   const tooltip = replaceMacros(userTooltip, macros);
@@ -100,6 +124,10 @@ const isInsideLimits = (value, min, max) => {
   }
 };
 
+const log10Conversion = (value) => {
+  return value.map((val) => (val > 0 ? Math.log10(val) : null));
+};
+
 const wrapComponent = (CustomComponent, props) => {
   return <CustomComponent {...props} />;
 };
@@ -110,6 +138,9 @@ export {
   formatValue,
   getContextPVs,
   getTooltipProps,
+  getDefaultPV,
+  getDefaultPVs,
   isInsideLimits,
+  log10Conversion,
   wrapComponent,
 };

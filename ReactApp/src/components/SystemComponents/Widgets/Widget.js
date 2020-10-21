@@ -19,6 +19,8 @@ import {
   checkPrecision,
   formatValue,
   getContextPVs,
+  getDefaultPV,
+  getDefaultPVs,
   getTooltipProps,
   isInsideLimits,
   wrapComponent,
@@ -50,34 +52,12 @@ function Widget(props) {
     disableProbe,
     index,
     numberFormat,
+    macros,
   } = props;
 
-  const defaultPV = {
-    value: 0,
-    label: "",
-    pvName: "",
-    initialized: false,
-    PVs: [],
-    metadata: {},
-    timestamp: "",
-    readOnly: true,
-    severity: 0,
-    enum_strs: [],
-    units: "",
-  };
-  let defaultPVs;
-  if (props.pvs !== undefined) {
-    defaultPVs = props.pvs.map(() => defaultPV);
-  } else {
-    defaultPVs = [];
-  }
-
-  const [anchorEl, setAnchorEl] = useState(null);
   const [focus, setFocus] = useState(false);
-  const [openContextMenu, setOpenContextMenu] = useState(false);
-  const [contextPVs, setContextPVs] = useState([]);
-  const [pvs, setPvs] = useState(defaultPVs);
-  const [pv, setPv] = useState(defaultPV);
+  const [pvs, setPvs] = useState(getDefaultPVs(props.pvs, macros));
+  const [pv, setPv] = useState(getDefaultPV(props.pv, macros));
 
   const alarmSeverity = useAlarmSeverity(props, pv);
   const enumStrings = useEnumStrings(props, pv);
@@ -100,6 +80,10 @@ function Widget(props) {
       {disconnectedIcon} {pv.pvName}
     </span>
   );
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [openContextMenu, setOpenContextMenu] = useState(false);
+  const [contextPVs, setContextPVs] = useState([]);
   const contextMenu = (
     <ContextMenu
       disableProbe={disableProbe}
