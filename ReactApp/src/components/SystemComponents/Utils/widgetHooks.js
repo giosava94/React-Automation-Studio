@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { replaceArrayMacros, replaceMacros } from "./macroReplacement";
 
 const useAlarmSeverity = (props, pv) => {
@@ -50,6 +50,24 @@ const useInitialized = (pvs) => {
     setInitialized(init);
   }, [pvs]);
   return initialized;
+};
+
+const useInterval = (callback, delay) => {
+  const savedCallback = useRef();
+
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  useEffect(() => {
+    function tick() {
+      savedCallback.current();
+    }
+    if (delay !== null && delay !== undefined) {
+      let id = setInterval(tick, delay);
+      return () => clearInterval(id);
+    }
+  }, [delay]);
 };
 
 const useLabel = (props, pv) => {
@@ -132,6 +150,7 @@ export {
   useAlarmSeverity,
   useEnumStrings,
   useInitialized,
+  useInterval,
   useLabel,
   useMinMax,
   usePrec,
