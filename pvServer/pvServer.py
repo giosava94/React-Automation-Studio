@@ -17,6 +17,8 @@ from epics import PV
 import os
 import sys
 import json
+import urllib.request
+import urllib.parse
 from bson.objectid import ObjectId
 sys.path.insert(0, '../')
 sys.path.insert(0, 'userAuthentication/')
@@ -30,7 +32,7 @@ load_dotenv()
 async_mode = 'gevent'
 print("")
 print('**************************************')
-print("React Automation Studio V2.0.1")
+print("React Automation Studio V2.1.0")
 print("")
 print("pvServer Environment Variables:")
 print("")
@@ -1132,7 +1134,90 @@ def databaseInsertOne(message):
     else:
         socketio.emit('redirectToLogIn',room=request.sid,namespace='/pvServer')
 
+@socketio.on('archiverRead', namespace='/pvServer')
+def archiverRead(message):
+    global clientPVlist,REACT_APP_DisableLogin
+    archiverURL= str(message['archiverURL'])
 
+    #print("databaseRead: SSID: ",request.sid,' dbURL: ', dbURL)
+    #print("message:",str(message))
+    authenticated=False
+    if REACT_APP_DisableLogin:
+        authenticated=True
+        accessControl={'userAuthorised':True,'permissions':{'read':True,'write':True}}
+    else :
+        accessControl=AutheriseUserAndPermissions(message['clientAuthorisation'],archiverURL)
+        authenticated=accessControl['userAuthorised']
+
+    if accessControl['userAuthorised'] :
+        if "arch://" in archiverURL:
+
+            str1=archiverURL.replace("arch://","")
+            strings=  str1.split(':')
+            try:
+                requestStr=str1.split("request:")[1]
+                request=json.loads(requestStr)
+            except:
+                raise Exception("Request not defined")
+
+
+            if(len(strings)>=1):
+                archiver= strings[0];
+
+
+                if ((len(archiver)>0)):
+                    write_access=False
+                    if(accessControl['permissions']['read']):
+                        if(accessControl['permissions']['write']):
+                            join_room(str(archiverURL)+'rw')
+                            write_access=True
+
+                        else:
+                            join_room(str(archiverURL)+'ro')
+                            write_access=False
+
+                        try:
+                            pv=request['pv']
+                            pv=pv.replace("pva://","")
+                            pv=urllib.parse.quote(pv)
+
+                            fromOptions=request['options']['from']
+
+                            fromOptions=urllib.parse.quote(fromOptions)
+                            toOptions=request['options']['to']
+
+                            toOptions=urllib.parse.quote(toOptions)
+                            parameters=request['options']['parameters']
+
+
+                            URL=str(os.environ[archiver])+'/retrieval/data/getData.json?pv='+pv+'&from='+fromOptions+'&to='+toOptions+parameters
+
+                            req = urllib.request.urlopen(URL)
+                            data = json.load(req)
+
+
+                            eventName='archiverReadData:'+archiverURL;
+
+                            d={'archiverURL': archiverURL,'write_access':write_access,'data': data}
+                            socketio.emit(eventName,d,str(archiverURL)+'rw',namespace='/pvServer')
+                            d={'archiverURL': archiverURL,'write_access':False,'data': data}
+                            socketio.emit(eventName,d,str(archiverURL)+'ro',namespace='/pvServer')
+                            return {'initialized':True}
+                        except:
+
+                            log.info('could not connect to Archiver: : {}',archiverURL)
+                            return {'initialized':False}
+
+
+
+
+
+
+
+        else:
+             log.info('Unkwown Archiver URL: : {}',archiverURL)
+    else:
+        socketio.emit('redirectToLogIn',room=request.sid,namespace='/pvServer')
 
 
 @socketio.on('AuthenticateClient', namespace='/pvServer')
