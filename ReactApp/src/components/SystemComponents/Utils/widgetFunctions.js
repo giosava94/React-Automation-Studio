@@ -51,12 +51,6 @@ const formatValue = (value, numberFormat) => {
   }
 };
 
-const getContextPVs = (pvs) => {
-  let newContextPVs = [];
-  pvs.forEach((item) => newContextPVs.push(...item.PVs));
-  return newContextPVs;
-};
-
 const getDefaultPV = (name, macros) => {
   let pvName = replaceMacros(name, macros);
   return {
@@ -136,7 +130,6 @@ export {
   checkPrecision,
   checkIndex,
   formatValue,
-  getContextPVs,
   getTooltipProps,
   getDefaultPV,
   getDefaultPVs,

@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { replaceArrayMacros, replaceMacros } from "./macroReplacement";
-import { getContextPVs } from "./widgetFunctions";
 import ContextMenu from "../ContextMenu";
 
 const useAlarmSeverity = (props, pv) => {
@@ -34,6 +33,7 @@ const useContextMenu = (pvs, readOnly, disableProbe) => {
   const [yPos, setYPos] = useState(0);
   const [openContextMenu, setOpenContextMenu] = useState(false);
   const [contextPVs, setContextPVs] = useState([]);
+
   const contextMenu = (
     <ContextMenu
       disableProbe={disableProbe}
@@ -49,6 +49,13 @@ const useContextMenu = (pvs, readOnly, disableProbe) => {
       probeType={readOnly ? "readOnly" : undefined}
     />
   );
+
+  const getContextPVs = (pvs) => {
+    let newContextPVs = [];
+    pvs.forEach((item) => newContextPVs.push(...item.PVs));
+    return newContextPVs;
+  };
+
   const handleToggleContextMenu = (event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -57,6 +64,7 @@ const useContextMenu = (pvs, readOnly, disableProbe) => {
     setOpenContextMenu(!openContextMenu);
     setContextPVs(getContextPVs(pvs));
   };
+
   return [contextMenu, handleToggleContextMenu];
 };
 
