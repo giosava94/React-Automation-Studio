@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import { LanDisconnect } from "mdi-material-ui/";
 import { Tooltip, makeStyles } from "@material-ui/core";
 import PV from "../PV";
-import ContextMenu from "../ContextMenu";
 import {
   useAlarmSeverity,
+  useContextMenu,
   useEnumStrings,
   useInitialized,
   useLabel,
@@ -18,7 +18,6 @@ import {
   checkIndex,
   checkPrecision,
   formatValue,
-  getContextPVs,
   getDefaultPV,
   getDefaultPVs,
   getTooltipProps,
@@ -81,35 +80,11 @@ function Widget(props) {
     </span>
   );
 
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [openContextMenu, setOpenContextMenu] = useState(false);
-  const [contextPVs, setContextPVs] = useState([]);
-  const contextMenu = (
-    <ContextMenu
-      disableProbe={disableProbe}
-      open={openContextMenu}
-      pvs={contextPVs}
-      handleClose={() => setOpenContextMenu(false)}
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: "bottom",
-        horizontal: "center",
-      }}
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "center",
-      }}
-      probeType={readOnly ? "readOnly" : undefined}
-    />
+  const [contextMenu, handleToggleContextMenu] = useContextMenu(
+    [pv, ...pvs],
+    readOnly,
+    disableProbe
   );
-
-  const handleToggleContextMenu = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    setAnchorEl(event.target);
-    setOpenContextMenu(!openContextMenu);
-    setContextPVs(getContextPVs([pv, ...pvs]));
-  };
 
   const [value, setValue] = useState(0);
   const [immediateValue, setImmediateValue] = useState(null);
