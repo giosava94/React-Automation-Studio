@@ -1,5 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { replaceArrayMacros, replaceMacros } from "./macroReplacement";
+import { getContextPVs } from "./widgetFunctions";
+import ContextMenu from "../ContextMenu";
 
 const useAlarmSeverity = (props, pv) => {
   const {
@@ -24,6 +26,38 @@ const useAlarmSeverity = (props, pv) => {
     }
   }, [pvSeverity, useStringSeverityMatch, usersSeverityStrings, value]);
   return alarmSeverity;
+};
+
+const useContextMenu = (pvs, readOnly, disableProbe) => {
+  // Context Menu Details
+  const [xPos, setXPos] = useState(0);
+  const [yPos, setYPos] = useState(0);
+  const [openContextMenu, setOpenContextMenu] = useState(false);
+  const [contextPVs, setContextPVs] = useState([]);
+  const contextMenu = (
+    <ContextMenu
+      disableProbe={disableProbe}
+      open={openContextMenu}
+      pvs={contextPVs}
+      handleClose={() => setOpenContextMenu(false)}
+      anchorReference="anchorPosition"
+      anchorPosition={{ top: yPos, left: xPos }}
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "center",
+      }}
+      probeType={readOnly ? "readOnly" : undefined}
+    />
+  );
+  const handleToggleContextMenu = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setXPos(event.clientX - 2);
+    setYPos(event.clientY - 4);
+    setOpenContextMenu(!openContextMenu);
+    setContextPVs(getContextPVs(pvs));
+  };
+  return [contextMenu, handleToggleContextMenu];
 };
 
 const useEnumStrings = (props, pv) => {
@@ -148,6 +182,7 @@ const useUnits = (props, pv) => {
 
 export {
   useAlarmSeverity,
+  useContextMenu,
   useEnumStrings,
   useInitialized,
   useInterval,
